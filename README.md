@@ -8,6 +8,7 @@ SMP是Service Management Platform的简写，SMP旨在提供一个一栈式微�
 
 * 配置中心
 * 服务发现
+* 服务编排
 * 动态路由
 * 持续集成、持续发布功能(CI/CD)
 * 基础资产管理（CMDB）
@@ -20,3 +21,4 @@ SMP是Service Management Platform的简写，SMP旨在提供一个一栈式微�
 * ui
 * agent
 * api
+* op
