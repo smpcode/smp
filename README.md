@@ -1,6 +1,6 @@
 # smp
 
-smp means Service Management Platform
+SMP是Service Management Platform的简写，SMP旨在提供一个一栈式微服务管理平台，专为中小型公司设计，降低运维成本，人力成本。
 
 ## 项目介绍
 
@@ -9,6 +9,9 @@ smp means Service Management Platform
 * 配置中心
 * 服务发现
 * 动态路由
+* 持续集成、持续发布功能(CI/CD)
+* 基础资产管理（CMDB）
+* PAAS平台
 
 ## 项目技术栈
 
