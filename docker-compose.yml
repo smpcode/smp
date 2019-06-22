@@ -1,2 +1,22 @@
-# 用于管理依赖环境，一键搭建测试使用
-# 项目依赖的服务包括：mysql，redis，nsq，zookeeper等
+version: "2"
+services:
+ redis:
+  image: redis:2.8.23
+  container_name: smp-redis
+  network_mode: host
+  ipc: host
+  restart: on-failure:10
+  mem_limit: 100m
+ mysql:
+   image: mysql:5.7.24
+   container_name: smp-mysql
+   volumes:
+     - "./mysqldata/:/var/lib/mysql"
+   restart: on-failure:10
+   network_mode: host
+   command: "mysqld --port=4316"
+   environment:
+     MYSQL_ROOT_PASSWORD: smp@123456
+     MYSQL_DATABASE: smp
+     MYSQL_USER: smp
+     MYSQL_PASSWORD: smp@bj1301

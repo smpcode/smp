@@ -1,6 +1,6 @@
 # smp
 
-SMP是Service Management Platform的简写，SMP旨在提供一个一栈式微服务管理平台，专为中小型公司设计，降低运维成本，人力成本。
+SMP是Service Management Platform的简写，SMP旨在提供一个一栈式微服务管理平台，专为中小型公司设计，降低运维成本和人力成本。
 
 ## 项目介绍
 
@@ -16,7 +16,7 @@ SMP是Service Management Platform的简写，SMP旨在提供一个一栈式微�
 
 ## 项目技术栈
 
-本项目前后端分离，后端API层基于python+tornado行开发，前端UI层基于vue+element进行开发，服务器端agent基于golang进行开发
+本项目前后端分离，后端API层基于python+tornado行开发，前端UI层基于vue+elementui进行开发，服务器端agent基于golang进行开发
 
 * ui
 * agent
