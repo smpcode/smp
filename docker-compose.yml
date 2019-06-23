@@ -1,22 +1,34 @@
 version: "2"
 services:
- redis:
-  image: redis:2.8.23
-  container_name: smp-redis
-  network_mode: host
-  ipc: host
-  restart: on-failure:10
-  mem_limit: 100m
- mysql:
-   image: mysql:5.7.24
-   container_name: smp-mysql
-   volumes:
-     - "./mysqldata/:/var/lib/mysql"
-   restart: on-failure:10
+  redis:
+   image: redis:2.8.23
+   container_name: smp-redis
    network_mode: host
-   command: "mysqld --port=4316"
-   environment:
-     MYSQL_ROOT_PASSWORD: smp@123456
-     MYSQL_DATABASE: smp
-     MYSQL_USER: smp
-     MYSQL_PASSWORD: smp@bj1301
+   ipc: host
+   restart: on-failure:10
+   mem_limit: 100m
+  mysql:
+    image: mysql:5.7.24
+    container_name: smp-mysql
+    volumes:
+      - "./mysqldata/:/var/lib/mysql"
+    restart: on-failure:10
+    network_mode: host
+    command: "mysqld --port=4316"
+    environment:
+      MYSQL_ROOT_PASSWORD: smp@123456
+      MYSQL_DATABASE: smp
+      MYSQL_USER: smp
+      MYSQL_PASSWORD: smp@bj1301
+  zk:
+    image: zookeeper:3.5.5
+    restart: always
+    container_name: smp-zk
+    network_mode: host
+    volumes:
+      - "./zkdata/data:/data"
+      - "./zkdata/log:/datalog"
+    environment:
+      ZOO_MAX_CLIENT_CNXNS: 1024
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
