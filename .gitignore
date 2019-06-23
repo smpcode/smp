@@ -5,6 +5,7 @@ __pycache__/
 .git-credentials
 mysqldata
 zkdata
+ui/node_modules
 
 # C extensions
 *.so
