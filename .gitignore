@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 .git-credentials
 mysqldata
+zkdata
 
 # C extensions
 *.so
