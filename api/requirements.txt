@@ -2,7 +2,7 @@ six==1.10.0
 redis==2.10.5
 tornado>=4.3
 ujson==1.35
-PyYAML==3.11
+pyyaml>=4.2b1
 kazoo>=2.2.1
 envelopes==0.4
 marshmallow>=2.7.0
