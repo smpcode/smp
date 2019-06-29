@@ -1,0 +1,58 @@
+debug: False
+
+database:
+  smp:
+    namespace: "arch.smp_mysql.tcp"
+    password: "smp@bj1301"
+    user: "smp"
+
+arch.smp_mysql.tcp:
+  - role: master
+    host: 127.0.0.1
+    port: 4316
+  - role: slave
+    host: 127.0.0.1
+    port: 4316
+
+server_log_conf:
+  version: 1
+  disable_existing_loggers: False
+  formatters:
+    smpapi:
+      format: '[%(levelname)s %(asctime)s %(filename)s %(lineno)d] %(message)s'
+    smpapi_es:
+      format: '%(message)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: DEBUG
+      formatter: smpapi
+      stream: ext://sys.stdout
+    info_file_handler:
+      class: cloghandler.ConcurrentRotatingFileHandler
+      level: INFO
+      formatter: smpapi
+      filename: /data/logs/smpapi/smpapi.info.log
+      maxBytes: 104857600 # 100MB
+      backupCount: 20
+      encoding: utf8
+    error_file_handler:
+      class: cloghandler.ConcurrentRotatingFileHandler
+      level: ERROR
+      formatter: smpapi
+      filename: /data/logs/smpapi/smpapi.errors.log
+      maxBytes: 104857600 # 100MB
+      backupCount: 20
+      encoding: utf8
+  loggers:
+    smpapi:
+      level: DEBUG
+      handlers: [console, info_file_handler, error_file_handler]
+      propagate: no
+    sanic:
+      level: ERROR
+      handlers: [info_file_handler, error_file_handler]
+      propagate: no
+  root:
+    level: DEBUG
+    handlers: [console, info_file_handler, error_file_handler]
