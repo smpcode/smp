@@ -32,3 +32,12 @@ services:
       ZOO_MAX_CLIENT_CNXNS: 1024
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+  qconf:
+    image: xidianwlc/qconf:1.2.1
+    restart: always
+    container_name: smp-qconf
+    network_mode: host
+    ipc: host
+    privileged: true
+    environment:
+      ZK_CLUSTER: "127.0.0.1:2181"

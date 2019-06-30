@@ -19,3 +19,4 @@ RUN pip3.6 install --no-cache-dir -r requirements.txt
 COPY . .
 
 ENTRYPOINT /bin/bash
+CMD ["python3.6", "cli.py", "-f conf/dev/conf.yml"]

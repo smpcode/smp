@@ -22,6 +22,9 @@ run:
 run_prefork:
 	$(PYTHON_BIN) cli.py -f $(CONFIG) api --route=all --port=7654 --prefork=2 --allow-origin="http://127.0.0.1:8081"
 
+build:
+	$(DOCKER_BIN) build -t smp_api:dev .
+
 test:
 	$(PYTEST_BIN) . -v
 
@@ -36,6 +39,5 @@ clean:
 	@echo "执行清理操作"
 	find . -name "*.pyc" | xargs rm -rf
 	find . -name "__pycache__" | xargs rm -rf
-
 
 .PHONY: run test docs
