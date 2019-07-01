@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.git-credentials
+mysqldata
+zkdata
+ui/node_modules
 
 # C extensions
 *.so
