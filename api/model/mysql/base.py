@@ -16,7 +16,7 @@ import logging as log
 from datetime import datetime
 
 from peewee import DoesNotExist
-from playhouse.read_slave import ReadSlaveModel
+from playhouse.read_subordinate import ReadSubordinateModel
 # inner
 from common.db.hook import (
     post_delete,
@@ -26,7 +26,7 @@ from common.db.hook import Model as _Model
 from common.db.database import Database
 
 
-class BaseModel(_Model, ReadSlaveModel):
+class BaseModel(_Model, ReadSubordinateModel):
 
     '''BaseModel的封装
     '''
@@ -38,8 +38,8 @@ class BaseModel(_Model, ReadSlaveModel):
 
         :param db: 数据库对象`common.db.database.Database`
         """
-        cls._meta.database = db.master_database
-        cls._meta.read_slaves = db.slaves_database or [db.master_database]
+        cls._meta.database = db.main_database
+        cls._meta.read_subordinates = db.subordinates_database or [db.main_database]
         return cls
 
     @classmethod

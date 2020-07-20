@@ -20,24 +20,24 @@ class NSC(object):
         """
         self.config = config
 
-    def get_master_service(self, namespace):
+    def get_main_service(self, namespace):
         """获取主服务
         """
         services = self.get_services(namespace)
         for service in services:
-            if service.get("role") == "master":
+            if service.get("role") == "main":
                 return service
         return {}
 
-    def get_slave_service(self, namespace):
+    def get_subordinate_service(self, namespace):
         """获取从服务
         """
-        slaves = []
+        subordinates = []
         services = self.get_services(namespace)
         for service in services:
-            if service.get('role') == 'slave':
-                slaves.append(service)
-        return slaves
+            if service.get('role') == 'subordinate':
+                subordinates.append(service)
+        return subordinates
 
     def get_services(self, namespace):
         """获取服务列表
