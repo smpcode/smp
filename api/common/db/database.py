@@ -95,7 +95,7 @@ class Database(object):
         self.engine = self.engine_map[engine]
         self.connect_kwargs = connect_kwargs
         self.load_database()
-        self.master_database.field_overrides.update({'enum': 'enum'})  # 增加枚举类型
+        self.main_database.field_overrides.update({'enum': 'enum'})  # 增加枚举类型
 
     def load_database(self):
         '''加载数据库配置
@@ -112,37 +112,37 @@ class Database(object):
             raise DatabaseError(
                 'Database engine not a subclass of peewee.Database: "%s"' % self.engine)
 
-        master_conf = self.get_master_conf()
-        self.master_database = self._connect(
-            master_conf, **self.connect_kwargs)
-        slave_conf = self.get_slave_conf()
-        self.slaves_database = [self._connect(
-            slave, **self.connect_kwargs) for slave in slave_conf]
+        main_conf = self.get_main_conf()
+        self.main_database = self._connect(
+            main_conf, **self.connect_kwargs)
+        subordinate_conf = self.get_subordinate_conf()
+        self.subordinates_database = [self._connect(
+            subordinate, **self.connect_kwargs) for subordinate in subordinate_conf]
 
-    def get_master_conf(self):
+    def get_main_conf(self):
         """通过服务发现获取主库配置
         """
-        master_conf = self.nsc.get_master_service(self.namespace)
+        main_conf = self.nsc.get_main_service(self.namespace)
         return dict(
-            host=master_conf['host'],
-            port=int(master_conf['port']),
+            host=main_conf['host'],
+            port=int(main_conf['port']),
             db=self.db_name,
             user=self.db_user,
             password=self.db_password
         )
 
-    def get_slave_conf(self):
+    def get_subordinate_conf(self):
         """通过服务发现获取从数据库配置列表
         """
-        slave_conf = []
-        slave_list = self.nsc.get_slave_service(self.namespace)
-        for slave in slave_list:
-            slave_conf.append(dict(host=slave['host'],
-                                   port=int(slave['port']),
+        subordinate_conf = []
+        subordinate_list = self.nsc.get_subordinate_service(self.namespace)
+        for subordinate in subordinate_list:
+            subordinate_conf.append(dict(host=subordinate['host'],
+                                   port=int(subordinate['port']),
                                    db=self.db_name,
                                    user=self.db_user,
                                    password=self.db_password))
-        return slave_conf
+        return subordinate_conf
 
     def _connect(self, config, **kwargs):
         '''解析配置
@@ -159,11 +159,11 @@ class Database(object):
         # 重试四次
         for _ in range(retry_num):
             try:
-                if self.master_database.is_closed():
-                    self.master_database.get_conn().ping(True)
-                    for slave in self.slaves_database:
-                        if slave.is_closed():
-                            slave.get_conn().ping(True)
+                if self.main_database.is_closed():
+                    self.main_database.get_conn().ping(True)
+                    for subordinate in self.subordinates_database:
+                        if subordinate.is_closed():
+                            subordinate.get_conn().ping(True)
                 break
             except OperationalError as err:
                 logging.error("connect to database failed, err=%s", err)
@@ -173,9 +173,9 @@ class Database(object):
         '''关闭连接
         '''
         try:
-            self.master_database.close()
-            for slave in self.slaves_database:
-                slave.close()
+            self.main_database.close()
+            for subordinate in self.subordinates_database:
+                subordinate.close()
         except:
             pass
 
@@ -185,7 +185,7 @@ class Database(object):
         :param data: data that need to insert
         :type data: list
         """
-        with self.master_database.atomic():
+        with self.main_database.atomic():
             try:
                 model.insert_many(data).upsert().execute()
             except KeyError as error:

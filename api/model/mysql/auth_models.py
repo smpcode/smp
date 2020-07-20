@@ -146,7 +146,7 @@ class AuthRoleResource(BaseModel):
     def fetchall(cls):
         """获取整个表数据
         """
-        # 使用master_database的execute_sql执行避免关联查询
+        # 使用main_database的execute_sql执行避免关联查询
         return cls._meta.database.execute_sql("select role_id, resource_id, method from auth_role_resource").fetchall()
 
 
