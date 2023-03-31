@@ -1,5 +1,5 @@
 six==1.10.0
-redis==2.10.5
+redis==4.4.4
 tornado>=4.3
 ujson==1.35
 pyyaml>=4.2b1
